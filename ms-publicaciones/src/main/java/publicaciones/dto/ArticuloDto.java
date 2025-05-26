@@ -1,0 +1,24 @@
+package publicaciones.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class ArticuloDto {
+    //con respecto al padre Publicacion
+    private String titulo;
+    private int anioPublicacion;
+    private String editorial;
+    private String isbn;
+    private String resumen;
+    private String idioma;
+    //atributos de la clase Articulo
+    private String revista;
+    private String doi;
+    private String volumen;
+    private String numero;
+    //
+}
