@@ -39,8 +39,7 @@ public class AutorService {
                 "Nuevo Autor"
         );
         return new ResponseDto(
-                "Autor creado correctamente",
-                autorRepository.save(autor)
+                "Autor creado correctamente", savedAutor
         );
     }
     public ResponseDto actualizarAutor(Long id, AutorDto dato) {
