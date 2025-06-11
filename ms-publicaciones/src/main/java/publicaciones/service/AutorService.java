@@ -19,6 +19,9 @@ public class AutorService {
     @Autowired
     private AutorRepository autorRepository;
 
+    @Autowired
+    private NotificacionProducer notificacionProducer;
+
     public ResponseDto crearAutor(AutorDto dato) {
         Autor autor = new Autor();
         autor.setNombre(dato.getNombre());
@@ -28,6 +31,13 @@ public class AutorService {
         autor.setNacionalidad(dato.getNacionalidad());
         autor.setTelefono(dato.getTelefono());
         autor.setInstitucion(dato.getInstitucion());
+        Autor savedAutor = autorRepository.save(autor);
+
+        // Enviar notificación de creación de autor
+        notificacionProducer.enviarNotificacion(
+                "Autor creado: " + savedAutor.getNombre() + " " + savedAutor.getApellido(),
+                "Nuevo Autor"
+        );
         return new ResponseDto(
                 "Autor creado correctamente",
                 autorRepository.save(autor)

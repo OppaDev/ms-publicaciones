@@ -18,7 +18,9 @@ public class ArticuloDto {
     //atributos de la clase Articulo
     private String revista;
     private String doi;
-    private String volumen;
-    private String numero;
+    private String areaInvestigacion;
+    private String fechaPublicacion;
+
+    private long idAutor;
     //
 }

@@ -9,7 +9,7 @@ import publicaciones.service.AutorService;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("autor")
 public class AutorController {
 
     @Autowired
