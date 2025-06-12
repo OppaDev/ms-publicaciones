@@ -34,4 +34,9 @@ public class AutorController {
     public ResponseDto buscarPorId(@PathVariable Long id) {
         return autorService.buscarAutorPorId(id);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseDto eliminarAutor(@PathVariable Long id) {
+        return autorService.eliminarAutor(id);
+    }
 }
