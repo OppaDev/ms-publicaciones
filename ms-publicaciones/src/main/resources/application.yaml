@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/publicaciones
+    url: jdbc:postgresql://localhost:5432/publicaciones_db
     username: admin
     password: admin12345
   jpa:
@@ -17,5 +17,8 @@ spring:
     port: 5672
     username: admin
     password: admin
+    queues:
+      notificaciones: notificaciones.cola
+      catalogo: catalogo.cola
 server:
   port: 8080

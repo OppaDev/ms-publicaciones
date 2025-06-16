@@ -2,6 +2,7 @@ package publicaciones.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import publicaciones.dto.ArticuloDto;
 import publicaciones.dto.ResponseDto;
 import publicaciones.model.Articulo;
@@ -24,6 +25,7 @@ public class ArticuloService {
     @Autowired
     private NotificacionProducer notificacionProducer;
 
+    @Transactional // Buena práctica
     public ResponseDto crearArticulo(ArticuloDto dto) {
         Autor autor = autorRepository.findById(dto.getIdAutor())
                 .orElseThrow(() -> new RuntimeException("Autor con id: " + dto.getIdAutor() + " no encontrado"));
@@ -33,7 +35,7 @@ public class ArticuloService {
         articulo.setTitulo(dto.getTitulo());
         articulo.setAnioPublicacion(dto.getAnioPublicacion());
         articulo.setEditorial(dto.getEditorial());
-        articulo.setIsbn(dto.getIsbn()); // ISBN puede ser opcional para artículos, pero está en el DTO
+        articulo.setIsbn(dto.getIsbn());
         articulo.setResumen(dto.getResumen());
         articulo.setIdioma(dto.getIdioma());
         // Campos específicos de Articulo
@@ -46,11 +48,17 @@ public class ArticuloService {
 
         Articulo savedArticulo = articuloRepository.save(articulo);
 
-        notificacionProducer.enviarNotificacion(
+        // Enviar notificación simple (funcionalidad original)
+        notificacionProducer.enviarNotificacionSimple(
                 "Artículo creado: " + savedArticulo.getTitulo(),
                 "Nuevo Artículo"
         );
-        return new ResponseDto("Artículo creado correctamente", savedArticulo);
+
+        // Enviar al catálogo (nueva funcionalidad)
+        // Usamos el DTO de entrada por simplicidad
+        notificacionProducer.enviarAPublicacionACatalogo("ARTICULO", dto);
+
+        return new ResponseDto("Artículo creado correctamente y enviado a procesamiento", savedArticulo);
     }
 
     public ResponseDto actualizarArticulo(Long id, ArticuloDto dto) {

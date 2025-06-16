@@ -1,5 +1,6 @@
 package publicaciones.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import publicaciones.dto.LibroDto;
@@ -24,6 +25,7 @@ public class LibroService {
     @Autowired
     private NotificacionProducer notificacionProducer;
 
+    @Transactional
     public ResponseDto crearLibro(LibroDto dto) {
         Autor autor = autorRepository.findById(dto.getIdAutor())
                 .orElseThrow(() -> new RuntimeException("Autor con id: " + dto.getIdAutor() + " no encontrado"));
@@ -45,11 +47,22 @@ public class LibroService {
 
         Libro savedLibro = libroRepository.save(libro);
 
-        notificacionProducer.enviarNotificacion(
+        // Enviar notificación simple (funcionalidad original)
+        notificacionProducer.enviarNotificacionSimple(
                 "Libro creado: " + savedLibro.getTitulo(),
                 "Nuevo Libro"
         );
-        return new ResponseDto("Libro creado correctamente", savedLibro);
+
+        // Enviar al catálogo (nueva funcionalidad)
+        // Creamos un LibroDto a partir de la entidad guardada o usamos el DTO de entrada
+        // Es mejor usar el DTO de entrada si no hay campos generados importantes que necesite el catálogo
+        // o si el DTO de entrada ya contiene toda la info que el catálogo espera.
+        // Por simplicidad, y asumiendo que el DTO de entrada es suficiente:
+        notificacionProducer.enviarAPublicacionACatalogo("LIBRO", dto);
+        // Si necesitaras enviar el ID generado por la BD o alguna otra info de `savedLibro`,
+        // tendrías que mapear `savedLibro` a un `LibroDto` antes de enviarlo.
+
+        return new ResponseDto("Libro creado correctamente y enviado a procesamiento", savedLibro);
     }
 
     public ResponseDto actualizarLibro(Long id, LibroDto dto) {

@@ -34,7 +34,7 @@ public class AutorService {
         Autor savedAutor = autorRepository.save(autor);
 
         // Enviar notificación de creación de autor
-        notificacionProducer.enviarNotificacion(
+        notificacionProducer.enviarNotificacionSimple(
                 "Autor creado: " + savedAutor.getNombre() + " " + savedAutor.getApellido(),
                 "Nuevo Autor"
         );
