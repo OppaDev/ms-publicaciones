@@ -23,11 +23,7 @@ public class NotificacionProducer {
     @Value("${spring.rabbitmq.queues.catalogo}")
     private String catalogoQueueName;
 
-    /**
-     * Envía una notificación simple al servicio de notificaciones.
-     * @param mensaje El contenido del mensaje.
-     * @param tipo El tipo de notificación.
-     */
+
     public void enviarNotificacionSimple(String mensaje, String tipo) {
         try {
             NotificacionDto dto = new NotificacionDto(mensaje, tipo);
@@ -40,11 +36,7 @@ public class NotificacionProducer {
         }
     }
 
-    /**
-     * Envía los datos de una publicación (libro o artículo) al servicio de catálogo.
-     * @param tipoPublicacion "LIBRO" o "ARTICULO".
-     * @param datosPublicacion El DTO del libro (LibroDto) o artículo (ArticuloDto).
-     */
+
     public void enviarAPublicacionACatalogo(String tipoPublicacion, Object datosPublicacion) {
         try {
             PublicacionParaCatalogoDto dtoParaCatalogo = new PublicacionParaCatalogoDto(tipoPublicacion, datosPublicacion);

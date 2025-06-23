@@ -9,14 +9,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LibroDto {
-    //con respecto al padre Publicacion
+
     private String titulo;
     private int anioPublicacion;
     private String editorial;
     private String isbn;
     private String resumen;
     private String idioma;
-    //atributos de la clase Libro
+
     private String genero;
     private int numeroPaginas;
     private String edicion;

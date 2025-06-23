@@ -17,20 +17,15 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue notificacionesQueue() {
-        // Esta cola es consumida por ms-notificaciones,
-        // aquí solo la declaramos para que RabbitTemplate la conozca.
-        // Si ms-notificaciones ya la crea como durable, esta declaración debe coincidir.
         return QueueBuilder.durable(notificacionesQueueName).build();
     }
 
     @Bean
     public Queue catalogoQueue() {
-        // Esta cola será consumida por ms-catalogo.
-        // La declaramos aquí para que RabbitTemplate la cree si no existe (y sea durable).
         return QueueBuilder.durable(catalogoQueueName).build();
     }
-
-    // No es necesario un Jackson2JsonMessageConverter aquí si ya lo tienes
-    // configurado globalmente o en el productor/consumidor.
-    // Spring Boot suele auto-configurar uno si Jackson está en el classpath.
+    @Bean
+    public Queue relojQueue() {
+        return QueueBuilder.durable("reloj.solicitud").build();
+    }
 }

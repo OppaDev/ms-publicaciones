@@ -47,20 +47,14 @@ public class LibroService {
 
         Libro savedLibro = libroRepository.save(libro);
 
-        // Enviar notificación simple (funcionalidad original)
+
         notificacionProducer.enviarNotificacionSimple(
                 "Libro creado: " + savedLibro.getTitulo(),
                 "Nuevo Libro"
         );
 
-        // Enviar al catálogo (nueva funcionalidad)
-        // Creamos un LibroDto a partir de la entidad guardada o usamos el DTO de entrada
-        // Es mejor usar el DTO de entrada si no hay campos generados importantes que necesite el catálogo
-        // o si el DTO de entrada ya contiene toda la info que el catálogo espera.
-        // Por simplicidad, y asumiendo que el DTO de entrada es suficiente:
         notificacionProducer.enviarAPublicacionACatalogo("LIBRO", dto);
-        // Si necesitaras enviar el ID generado por la BD o alguna otra info de `savedLibro`,
-        // tendrías que mapear `savedLibro` a un `LibroDto` antes de enviarlo.
+
 
         return new ResponseDto("Libro creado correctamente y enviado a procesamiento", savedLibro);
     }

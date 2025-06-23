@@ -25,37 +25,32 @@ public class ArticuloService {
     @Autowired
     private NotificacionProducer notificacionProducer;
 
-    @Transactional // Buena práctica
+    @Transactional
     public ResponseDto crearArticulo(ArticuloDto dto) {
         Autor autor = autorRepository.findById(dto.getIdAutor())
                 .orElseThrow(() -> new RuntimeException("Autor con id: " + dto.getIdAutor() + " no encontrado"));
 
         Articulo articulo = new Articulo();
-        // Campos de Publicacion
         articulo.setTitulo(dto.getTitulo());
         articulo.setAnioPublicacion(dto.getAnioPublicacion());
         articulo.setEditorial(dto.getEditorial());
         articulo.setIsbn(dto.getIsbn());
         articulo.setResumen(dto.getResumen());
         articulo.setIdioma(dto.getIdioma());
-        // Campos específicos de Articulo
         articulo.setRevista(dto.getRevista());
         articulo.setDoi(dto.getDoi());
         articulo.setAreaInvestigacion(dto.getAreaInvestigacion());
         articulo.setFechaPublicacion(dto.getFechaPublicacion());
-        // Asignar Autor
         articulo.setAutor(autor);
 
         Articulo savedArticulo = articuloRepository.save(articulo);
 
-        // Enviar notificación simple (funcionalidad original)
         notificacionProducer.enviarNotificacionSimple(
                 "Artículo creado: " + savedArticulo.getTitulo(),
                 "Nuevo Artículo"
         );
 
-        // Enviar al catálogo (nueva funcionalidad)
-        // Usamos el DTO de entrada por simplicidad
+
         notificacionProducer.enviarAPublicacionACatalogo("ARTICULO", dto);
 
         return new ResponseDto("Artículo creado correctamente y enviado a procesamiento", savedArticulo);
