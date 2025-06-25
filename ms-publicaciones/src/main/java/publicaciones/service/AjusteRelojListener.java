@@ -3,9 +3,10 @@ package publicaciones.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import publicaciones.dto.HoraServidorDto;
 
-@Configuration
+@Component
 public class AjusteRelojListener {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
